@@ -17,15 +17,35 @@ public class ClientConnection implements Runnable {
 
     @Override
     public void run() {
-        out.println("HTTP/1.1 200 OK");
-        out.println("Content-Type: text/html");
-        out.println("\r\n");
-        out.println("<p> Hello world </p>");
-        out.flush();
-        try {
-            this.stop();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        while (true) {
+            String response = null;
+            try {
+                response = in.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            String[] split = response.split("-");
+
+            if (split.length > 2) {
+                out.println("To many operator signs, only one allowed.");
+                continue;
+            }
+            if (split.length < 2) {
+                out.println("Wrong format, too few arguments");
+                continue;
+            }
+
+            int sum;
+            try {
+                int num1 = Integer.parseInt(split[0]);
+                int num2 = Integer.parseInt(split[1]);
+                sum = num1 - num2;
+            } catch (NumberFormatException e) {
+                out.println("Input must be integers.");
+                continue;
+            }
+
+            out.println(sum);
         }
     }
 

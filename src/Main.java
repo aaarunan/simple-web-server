@@ -4,7 +4,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         Server server = new Server();
-        int port = 8000;
+        int port = 6666;
 
         try {
             server.start(port);
